@@ -59,7 +59,7 @@ Total sessions: 1
 
 When the last user has disconnected:
 ```
-Received: by myroutershostname.somedomain.local (sSMTP sendmail emulation); Sat, 04 Aug 2018 19:10:02 -0400
+Received: by myroutershostname.somedomain.local (sSMTP sendmail emulation); Sat, 04 Aug 2018 19:12:01 -0400
 From: root <example.user@gmail.com>
 Date: Sat, 04 Aug 2018 19:12:01 -0400
 Subject: VPN activity detected
