@@ -3,7 +3,7 @@
 
 # usg-scripts
 This repository contains scripts that I've written for use on a Unifi Security Gateway.  The list is pretty short right now, but will expand over time.
-- VPN usage e-mail notifications
+- [VPN e-mail notifications](./vpn-notifications/)
 
 ## Bugs
 If you notice any issues/bugs, feel free to either file an issue, or better yet - submit a pull request.
