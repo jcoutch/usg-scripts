@@ -1,3 +1,5 @@
+### WARNING: While I've made every effort to ensure these scripts work properly on my test device, use of these scripts are at your own risk. I will not be held liable for any damages caused directly/indirectly by their usage.
+
 # VPN e-mail notifications
 
 The set of scripts in this directory will poll the USG's VPN connection list every minute and report any VPN connectivity changes.
