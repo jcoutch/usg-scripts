@@ -17,7 +17,6 @@ cd /config/scripts/post-config.d
 chmod a+x config-vpn-notifications.sh
 chmod a+x notify-on-vpn-state-change.sh
 sudo ./config-vpn-notifications.sh
-exit
 ```
 
 # Removal
