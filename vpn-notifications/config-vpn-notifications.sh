@@ -2,7 +2,7 @@
 # This script goes in /config/scripts/post-config.d
 
 # Variables you'll need to change are in parameter.env
-source parameter.env
+source /config/scripts/post-config.d/parameter.env
 
 #################################################################################
 ### Don't change anything beyond this point unless you know what you're doing ###
