@@ -56,3 +56,7 @@ then
 fi
 # Back up this run to use it later for stat
 cp /tmp/temp.vpnfulllist /tmp/temp.vpnfulllist2
+
+# Call bad login
+source /config/scripts/post-config.d/search-login-trial.sh
+
