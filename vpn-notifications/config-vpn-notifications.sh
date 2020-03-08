@@ -1,15 +1,8 @@
 #!/bin/vbash
 # This script goes in /config/scripts/post-config.d
 
-# Variables you'll need to change
-HostName='myroutershostname.somedomain.local'  # Hostname of your USG
-RouterUser='admin'  # Default username for your USG
-MailServer='smtp.gmail.com'  # SMTP Server
-MailPort='587'  # SMTP Server Port
-EmailAddress='example.user@gmail.com'  # E-mail address to send as
-AuthUser='example.user'  # SMTP Username
-Password='SomeP@ssword12345'  # SMTP Password
-
+# Variables you'll need to change are in parameter.env
+source parameter.env
 
 #################################################################################
 ### Don't change anything beyond this point unless you know what you're doing ###

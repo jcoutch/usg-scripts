@@ -5,9 +5,29 @@
 The set of scripts in this directory will poll the USG's VPN connection list every minute and report any VPN connectivity changes.
 
 # Installation
-- Modify the settings at the top of both `config-vpn-notifications.sh` and `notify-on-vpn-state-change.sh`
+- Create a file parameter.env with the following content
+```
+# This script goes in /config/scripts/post-config.d
+
+# Variables you'll need to change config-vpn-notifications.sh
+HostName='myroutershostname.somedomain.local'  # Hostname of your USG
+RouterUser='admin'  # Default username for your USG
+MailServer='smtp.gmail.com'  # SMTP Server
+MailPort='587'  # SMTP Server Port
+EmailAddress='example.user@gmail.com'  # E-mail address to send as
+AuthUser='example.user'  # SMTP Username
+Password='SomeP@ssword12345'  # SMTP Password
+
+
+# Variables you'll need to change for notify-on-vpn-state-change.sh
+IPSegment='10.0'  # The IP address segment your VPN is located on (i.e. '10.0.' or '192.168.1.')
+DestinationEmail='user@example.com'  # Where to send e-mails to
+ClientsName='StringToDifferenciatNetworks'
+```
+
 - Push the scripts to your USG via `scp`, replacing the username and ip address with your own:
 ```
+scp parameter.env admin@192.168.0.1:/config/scripts/post-config.d/
 scp config-vpn-notifications.sh admin@192.168.0.1:/config/scripts/post-config.d/
 scp notify-on-vpn-state-change.sh admin@192.168.0.1:/config/scripts/post-config.d/
 ```
@@ -48,12 +68,17 @@ Subject: VPN activity detected
     VPN connection activity was detected on your network:
 
     Active remote access VPN sessions:
+     ---- Current active connection ----
 
 User       Time      Proto Iface   Remote IP       TX pkt/byte   RX pkt/byte  
 ---------- --------- ----- -----   --------------- ------ ------ ------ ------
 some.user  00h00m12s L2TP  l2tp0   10.0.0.1           56  11.6K     70   8.3K
 
 Total sessions: 1
+
+    ---- Previous status 1 min ago ----
+
+    No active remote access VPN sessions
 ```
 
 When the last user has disconnected:
@@ -65,5 +90,14 @@ Subject: VPN activity detected
 
     VPN connection activity was detected on your network:
 
+     ---- Current active connection ----
+
     No active remote access VPN sessions
+
+    ---- Previous status 1 min ago ----
+
+User       Time      Proto Iface   Remote IP       TX pkt/byte   RX pkt/byte  
+---------- --------- ----- -----   --------------- ------ ------ ------ ------
+some.user  01h00m12s L2TP  l2tp0   10.0.0.1          156  11.6G     90   8.3M
+
 ```

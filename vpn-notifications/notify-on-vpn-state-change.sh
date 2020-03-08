@@ -1,10 +1,8 @@
 #!/bin/vbash
 # This script goes in /config/scripts/post-config.d
 
-# Variables you'll need to change
-IPSegment='10.0.'  # The IP address segment your VPN is located on (i.e. '10.0.' or '192.168.1.')
-DestinationEmail='user@example.com'  # Where to send e-mails to
-
+# Variables you'll need to change are in parameter.env
+source parameter.env
 
 #################################################################################
 ### Don't change anything beyond this point unless you know what you're doing ###
@@ -18,6 +16,9 @@ run=/opt/vyatta/bin/vyatta-op-cmd-wrapper
 touch /tmp/temp.vpnconnections
 touch /tmp/temp.vpnconnections2
 
+touch /tmp/temp.vpnfulllist
+touch /tmp/temp.vpnfulllist2
+
 # Grab the full list of VPN connections
 $run show vpn remote-access > /tmp/temp.vpnfulllist
 
@@ -30,13 +31,20 @@ then
     echo "VPN Activity detected!  Sending e-mail..."
 
     # Someone connected to/disconnected from the VPN!  Send an e-mail notification
-    connInfo=$(</tmp/temp.vpnfulllist)
+    connInfo="$(</tmp/temp.vpnfulllist)"
+    connInfo2="$(</tmp/temp.vpnfulllist2)"
 
-    echo "Subject: VPN activity detected
+    echo "Subject: VPN activity detected on $ClientsName's network!
 
     VPN connection activity was detected on your network:
+    ---- Current active connection ----
 
     $connInfo
+
+    ---- Previous status 1 min ago ----
+
+    $connInfo2
+
     " > /tmp/temp.vpnemail
 
     /usr/sbin/ssmtp $DestinationEmail < /tmp/temp.vpnemail
@@ -46,3 +54,5 @@ then
     # Back up this run so we can compare later
     cp /tmp/temp.vpnconnections /tmp/temp.vpnconnections2
 fi
+# Back up this run to use it later for stat
+cp /tmp/temp.vpnfulllist /tmp/temp.vpnfulllist2
