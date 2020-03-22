@@ -1,3 +1,4 @@
 script:
-  # Fail if any of these files have warnings
-  - shellcheck -x vpn-notifications/parameter.env vpn-notifications/*.sh
+  # Fail if any of these files have warnings.
+  # use bash even if in ubnt USG vbash is used
+  - shellcheck --shell=bash -x vpn-notifications/parameter.env vpn-notifications/*.sh
