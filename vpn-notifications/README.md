@@ -25,13 +25,44 @@ DestinationEmail='user@example.com'  # Where to send e-mails to
 ClientsName='StringToDifferenciatNetworks'
 ```
 
+- To start the scripts two options:
+
+- Option1: Prefered which remain active when new provision occurs: In CloudKey
 - Push the scripts to your USG via `scp`, replacing the username and ip address with your own:
 ```
 scp parameter.env admin@192.168.0.1:/config/scripts/post-config.d/
 scp config-vpn-notifications.sh admin@192.168.0.1:/config/scripts/post-config.d/
 scp notify-on-vpn-state-change.sh admin@192.168.0.1:/config/scripts/post-config.d/
 ```
-- To start the scripts, you'll need to log in via SSH, change the scripts to executable, and execute `config-vpn-notifications.sh` for the first time via `sudo`.  After that, the script will be set up as a scheduled task, and will persist after reboots.  On upgrades, both scripts will be executed once the upgrade is complete, re-establishing the scheduled task:
+
+Follow to find where the gateway.json is in your CloudKey https://help.ubnt.com/hc/en-us/articles/215458888-UniFi-How-to-further-customize-USG-configuration-with-config-gateway-json 
+with the following content added to your gateway.json
+```{
+	"system": {
+		"task-scheduler": {
+			"task": {
+				"check-vpn-connections": {
+					"executable": {
+						"path": "/config/scripts/post-config.d/notify-on-vpn-state-change.sh"
+					},
+				"interval": "1m"
+				}
+			}
+		}
+	}
+}
+```
+Log into USG and render scripts executable.
+
+Option 2: By "hand"
+- Push the scripts to your USG via `scp`, replacing the username and ip address with your own:
+```
+scp parameter.env admin@192.168.0.1:/config/scripts/post-config.d/
+scp config-vpn-notifications.sh admin@192.168.0.1:/config/scripts/post-config.d/
+scp notify-on-vpn-state-change.sh admin@192.168.0.1:/config/scripts/post-config.d/
+scp config-vpn-notifications.sh admin@192.168.0.1:/config/scripts/post-config.d/
+```
+Then you'll need to log in via SSH, change the scripts to executable, and execute `config-vpn-notifications.sh` for the first time via `sudo`.  After that, the script will be set up as a scheduled task, and will persist after reboots.  On upgrades, both scripts will be executed once the upgrade is complete, re-establishing the scheduled task:
 ```
 cd /config/scripts/post-config.d
 chmod a+x config-vpn-notifications.sh
@@ -39,7 +70,7 @@ chmod a+x notify-on-vpn-state-change.sh
 sudo ./config-vpn-notifications.sh
 ```
 
-# Removal
+# Removal For option 2
 - Connect to the USG via SSH, and run the following commands:
 ```
 configure
