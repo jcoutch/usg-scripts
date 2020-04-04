@@ -36,7 +36,7 @@ then
 
     " > /tmp/temp.vpnpeeremail
 
-    /usr/sbin/ssmtp $DestinationEmail < /tmp/temp.vpnpeeremail
+    /usr/sbin/ssmtp "$DestinationEmail" < /tmp/temp.vpnpeeremail
 
     echo "Done!"
 

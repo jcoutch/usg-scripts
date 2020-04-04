@@ -13,10 +13,11 @@ source /opt/vyatta/etc/functions/script-template
 run=/opt/vyatta/bin/vyatta-op-cmd-wrapper
 
 
-# Verify and prepare SSMTP configuration
-if [ ! -f "/etc/ssmtp/revaliases" ]; 
+# Verify and prepare SSMTP configuration if necessary
+rev_search=$(grep ":$MailServer:$MailPort" "/etc/ssmtp/revaliases")
+if [ -z "$rev_search" ];
 then
-# Write aliases config
+# Write aliases config as config does not include what is expected
 cat > /etc/ssmtp/revaliases <<EOF
 # sSMTP aliases
 # 
@@ -31,10 +32,10 @@ EOF
 
 fi
 
-if [ ! -f "/etc/ssmtp/ssmtp.conf" ];
+ssmtp_search:=$(grep "mailhub=$MailServer:$MailPort" "/etc/ssmtp/ssmtp.conf")
+if [ -z "$ssmtp_search" ];
 then
-
-# Write SMTP config
+# Write SMTP config as ssmtp not configured
 cat > /etc/ssmtp/ssmtp.conf <<EOF
 #
 # Config file for sSMTP sendmail
@@ -76,7 +77,7 @@ touch /tmp/temp.vpnfulllist2
 $run show vpn remote-access > /tmp/temp.vpnfulllist
 
 # Parse out just the user and ip address
-cat /tmp/temp.vpnfulllist|grep $IPSegment|awk -F' ' '{printf "%s %s\n", $1, $5}' > /tmp/temp.vpnconnections
+grep "$IPSegment" /tmp/temp.vpnfulllist | awk -F' ' '{printf "%s %s\n", $1, $5}' > /tmp/temp.vpnconnections
 
 # Check if they differ from the last time we checked
 if ! cmp -s /tmp/temp.vpnconnections /tmp/temp.vpnconnections2
@@ -100,7 +101,7 @@ then
 
     " > /tmp/temp.vpnemail
 
-    /usr/sbin/ssmtp $DestinationEmail < /tmp/temp.vpnemail
+    /usr/sbin/ssmtp "$DestinationEmail" < /tmp/temp.vpnemail
 
     echo "Done!"
 
