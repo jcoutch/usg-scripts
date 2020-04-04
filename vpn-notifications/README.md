@@ -27,7 +27,7 @@ ClientsName='StringToDifferenciatNetworks'
 
 - To start the scripts two options:
 
-- Option1: Prefered which remain active when new provision occurs: In CloudKey
+## Option1: Prefered which remain active when new provision occurs: In CloudKey
 - Push the scripts to your USG via `scp`, replacing the username and ip address with your own:
 ```
 scp parameter.env admin@192.168.0.1:/config/scripts/post-config.d/
@@ -54,7 +54,7 @@ with the following content added to your gateway.json
 ```
 Log into USG and render scripts executable.
 
-Option 2: By "hand"
+## Option 2: By "hand"
 - Push the scripts to your USG via `scp`, replacing the username and ip address with your own:
 ```
 scp parameter.env admin@192.168.0.1:/config/scripts/post-config.d/
